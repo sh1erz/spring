@@ -22,6 +22,12 @@ public class DataProvider implements DAO {
                 .map(this::categoryEntityToDomain).orElse(null);
     }
 
+    @Override
+    public Product getProductById(long id) {
+        return productEntities.stream().filter(p -> p.getId() == id).findFirst()
+                .map(this::productEntityToDomain).orElse(null);
+    }
+
     private List<Product> getProductsInCategory(CategoryEntity categoryEntity) {
         return productEntities.stream().filter(productEntity -> productEntity.getCategoryId() == categoryEntity.getId())
                 .map(pe -> new Product(pe.getId(), pe.getName(), pe.getPrice())).collect(Collectors.toList());
@@ -37,6 +43,10 @@ public class DataProvider implements DAO {
         return new Category(ce.getId(), ce.getName(), getSubcategories(ce), getProductsInCategory(ce));
     }
 
+    private Product productEntityToDomain(ProductEntity pe) {
+        return new Product(pe.getId(), pe.getName(), pe.getPrice());
+    }
+
 
     private final List<ProductEntity> productEntities = List.of(
             new ProductEntity(0, "Accessoire 1", 50, 2),
@@ -46,7 +56,7 @@ public class DataProvider implements DAO {
             new ProductEntity(5, "Lighting", 100, 5),
             new ProductEntity(6, "Lighting2", 110, 5)
     );
-   private final List<CategoryEntity> categories = List.of(
+    private final List<CategoryEntity> categories = List.of(
             new CategoryEntity(0, "Electronics"),
             new CategoryEntity(1, "Smart Home"),
             new CategoryEntity(2, "Accessories", 0),

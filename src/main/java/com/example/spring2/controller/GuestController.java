@@ -1,30 +1,26 @@
 package com.example.spring2.controller;
 
 import com.example.spring2.model.Category;
-import com.example.spring2.repository.entities.CategoryEntity;
 import com.example.spring2.services.api.CategoryService;
+import com.example.spring2.services.api.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import javax.annotation.Resource;
 
 @Controller
 public class GuestController {
 
-    @Autowired
+    @Resource(name = "categoryService")
     private CategoryService categoryService;
+    @Autowired
+    private ProductService productService;
 
-    //private final DataProvider repository = new DataProvider();
-    private List<CategoryEntity> categories;
-
-    static String ROOT_CATEGORIES = "root_categories";
-
-
-    @RequestMapping(value = { "/", "/index" }, method = RequestMethod.GET)
+    @GetMapping(value = { "/", "/index" })
     public String index(Model model){
-        model.addAttribute(ROOT_CATEGORIES, categoryService.getRootCategories());
+        model.addAttribute("root_categories", categoryService.getRootCategories());
         return "index";
     }
 
@@ -34,6 +30,18 @@ public class GuestController {
         return categoryService.getCategory(id);
     }
 
+    @GetMapping(value = "/guest/products")
+    public String products(Model model, @RequestParam long id) {
+        Category category = categoryService.getCategory(id);
+        model.addAttribute("category", category);
+        return "products";
+    }
+
+    @GetMapping(value = "/guest/product")
+    public String product(Model model, @RequestParam long id) {
+        model.addAttribute("product", productService.getProduct(id));
+        return "guest_product";
+    }
 
 
 }

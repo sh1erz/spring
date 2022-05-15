@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${product.name}"></title>
+</head>
+<body style="margin: 0">
+<header th:replace="fragments/header.html :: header"></header>
+<h1 th:text="${product.name}"></h1>
+<div th:text="|Price: ${product.price}|"></div>
+
+</body>
+</html>
