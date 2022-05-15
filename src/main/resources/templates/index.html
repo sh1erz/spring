@@ -13,37 +13,61 @@
 <header th:replace="fragments/header.html :: header"></header>
 <h1>Categories</h1>
 <div>
-    <div th:each="category : ${root_categories}" th:id="${category.id}">
-        <button class="category" th:text="${category.name}"
-                th:onclick="|makeSubmenu(${category.id})|"></button>
+    <div class="mx-0 w-100" th:each="categoryEntity : ${root_categories}" th:id="${categoryEntity.id}">
+        <button  th:text="${categoryEntity.name}"
+                th:onclick="|makeSubmenu(${categoryEntity.id})|"></button>
     </div>
 
 </div>
 <script th:inline="javascript" type="text/javascript">
     function makeSubmenu(categoryId) {
         $.get({
-            url: /*[[ @{/ajax/getSubCategories} ]]*/ null,
+            url: /*[[ @{/ajax/getCategory} ]]*/ null,
             dataType: 'json',
             data: {id: categoryId}
-        }).then(function (subCategories) {
-            alert('Horray! Someone wrote "' + subCategories + '"!');
+        }).then(function (category) {
+
             const categoryDiv = document.getElementById(categoryId)
-            if (subCategories.length <= 0) {
-                const a = document.createElement("a")
-                a.setAttribute("href", "/product")
-            }
-            for (let i = 0; i < subCategories.length; i++) {
-                let subcategory = subCategories[i]
-                const div = document.createElement("div");
-                const b = document.createElement("button");
-                alert(subcategory.name)
-                div.setAttribute("id", subcategory.id)
-                b.setAttribute("onclick", "makeSubmenu(" + subcategory.id + ")")
+            //remove Submenu for categoryEntity button
+            categoryDiv.firstElementChild.setAttribute("onclick", "removeSubmenu(" + categoryId + ")")
+
+            const subCategoriesDiv = document.createElement("div");
+            subCategoriesDiv.setAttribute("id", categoryId + "_sub")
+            categoryDiv.append(subCategoriesDiv)
+
+            for (let i = 0; i < category.categories.length; i++) {
+                let subcategory = category.categories[i]
+                const div = document.createElement("div")
+                const b = document.createElement("button")
                 b.innerHTML = subcategory.name
-                categoryDiv.append(div)
+                setStyles(categoryDiv, div)
+                subCategoriesDiv.appendChild(div)
+                div.setAttribute("id", subcategory.id)
                 div.appendChild(b)
+
+                if (subcategory.products.length > 0) {
+                    //if its end category
+                    b.setAttribute("onclick", "location.href='http://localhost:8080/products?id="
+                        + subcategory.id + "';")
+                }else {
+                    b.setAttribute("onclick", "makeSubmenu(" + subcategory.id + ")")
+
+                }
             }
         });
+    }
+
+    function setStyles(styledElem, elem){
+        let margin = 1 + parseInt(styledElem.getAttribute("class").charAt(3))
+        elem.setAttribute("class", "mx-" + margin +" w-100")
+    }
+
+    function removeSubmenu(categoryId) {
+        const subcategoriesDiv = document.getElementById(categoryId + '_sub')
+        subcategoriesDiv.remove()
+        const categoryDiv = document.getElementById(categoryId)
+        categoryDiv.firstElementChild.setAttribute("onclick", "makeSubmenu(" + categoryId + ")")
+
     }
 </script>
 </body>
