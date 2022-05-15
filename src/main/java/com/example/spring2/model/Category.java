@@ -1,20 +1,19 @@
 package com.example.spring2.model;
 
+import java.util.List;
+
 public class Category {
     private final long id;
     private String name;
-    private long categoryId = -1;
+    private List<Category> categories;
+    private List<Product> products;
 
-    public Category(long id, String name) {
+    public Category(long id, String name, List<Category> categories, List<Product> products) {
         this.id = id;
         this.name = name;
+        this.categories = categories;
+        this.products = products;
     }
-
-    public Category(long id, String name, long categoryId) {
-        this(id, name);
-        this.categoryId = categoryId;
-    }
-
 
     public long getId() {
         return id;
@@ -28,11 +27,19 @@ public class Category {
         this.name = name;
     }
 
-    public long getCategoryId() {
-        return categoryId;
+    public List<Category> getCategories() {
+        return categories;
     }
 
-    public void setCategoryId(long categoryId) {
-        this.categoryId = categoryId;
+    public void setCategories(List<Category> categories) {
+        this.categories = categories;
+    }
+
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
     }
 }

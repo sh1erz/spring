@@ -3,7 +3,6 @@ package com.example.spring2.services.impl;
 import com.example.spring2.model.Category;
 import com.example.spring2.repository.DAO;
 import com.example.spring2.services.api.CategoryService;
-import com.fasterxml.jackson.core.JsonEncoding;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,10 +22,10 @@ public class CategoryServiceImpl implements CategoryService {
         return dao.getRootCategories();
     }
 
+
     @Override
-    public List<Category> getSubCategories(long categoryId) {
-        Category category = dao.getCategoryById(categoryId);
-        return dao.getSubcategories(category);
+    public Category getCategory(long categoryId) {
+        return dao.getCategoryById(categoryId);
     }
 
 }
