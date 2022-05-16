@@ -21,7 +21,7 @@ public class GuestController {
     @GetMapping(value = { "/", "/index" })
     public String index(Model model){
         model.addAttribute("root_categories", categoryService.getRootCategories());
-        return "index";
+        return "index1";
     }
 
     @GetMapping(value = "/ajax/getCategory")
@@ -30,7 +30,7 @@ public class GuestController {
         return categoryService.getCategory(id);
     }
 
-    @GetMapping(value = "/guest/products")
+    @GetMapping(value = "/products")
     public String products(Model model, @RequestParam long id) {
         Category category = categoryService.getCategory(id);
         model.addAttribute("category", category);

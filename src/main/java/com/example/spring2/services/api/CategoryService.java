@@ -8,4 +8,8 @@ public interface CategoryService {
     List<Category> getRootCategories();
 
     Category getCategory(long categoryId);
+
+    boolean deleteCategory(long id);
+
+    boolean addCategory(String name, long parentCategoryId);
 }

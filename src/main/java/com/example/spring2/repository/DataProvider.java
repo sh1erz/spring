@@ -6,6 +6,7 @@ import com.example.spring2.repository.entities.CategoryEntity;
 import com.example.spring2.repository.entities.ProductEntity;
 import org.springframework.stereotype.Repository;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,6 +21,17 @@ public class DataProvider implements DAO {
     public Category getCategoryById(long id) {
         return categories.stream().filter(c -> c.getId() == id).findFirst()
                 .map(this::categoryEntityToDomain).orElse(null);
+    }
+
+    @Override
+    public boolean deleteCategory(long id) {
+       return categories.removeIf(ce -> ce.getId() == id);
+    }
+
+    @Override
+    public boolean addCategory(String name, long parentCategoryId) {
+        CategoryEntity category = new CategoryEntity(++categoryId,name,parentCategoryId);
+        return categories.add(category);
     }
 
     @Override
@@ -47,8 +59,10 @@ public class DataProvider implements DAO {
         return new Product(pe.getId(), pe.getName(), pe.getPrice());
     }
 
+    static int productId = 6;
+    static int categoryId = 5;
 
-    private final List<ProductEntity> productEntities = List.of(
+    private final List<ProductEntity> productEntities = Arrays.asList(
             new ProductEntity(0, "Accessoire 1", 50, 2),
             new ProductEntity(2, "Accessoire 2", 60, 2),
             new ProductEntity(3, "Accessoire 3", 70, 2),
@@ -56,7 +70,7 @@ public class DataProvider implements DAO {
             new ProductEntity(5, "Lighting", 100, 5),
             new ProductEntity(6, "Lighting2", 110, 5)
     );
-    private final List<CategoryEntity> categories = List.of(
+    private final List<CategoryEntity> categories = Arrays.asList(
             new CategoryEntity(0, "Electronics"),
             new CategoryEntity(1, "Smart Home"),
             new CategoryEntity(2, "Accessories", 0),

@@ -35,4 +35,5 @@ public class CategoryEntity {
     public void setCategoryId(long categoryId) {
         this.categoryId = categoryId;
     }
+
 }

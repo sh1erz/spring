@@ -8,16 +8,31 @@
 </head>
 <body style="margin: 0;">
 <header th:replace="fragments/header.html :: header"></header>
-<h1>Categories</h1>
+<h2>Categories</h2>
 <div>
-    <div class="ms-0 w-100" th:each="categoryEntity : ${root_categories}" th:id="${categoryEntity.id}">
+    <div class="ms-0 w-100 row-cols-4" th:each="categoryEntity : ${root_categories}" th:id="${categoryEntity.id}">
         <button  th:text="${categoryEntity.name}"
-                th:onclick="|makeSubmenu(${categoryEntity.id})|"></button>
+                 th:onclick="|openSubmenu(${categoryEntity.id})|"></button>
+        <button th:onclick="|removeCategory(${categoryEntity.id})|">Remove</button>
+        <button th:onclick="|showAddCategoryForm(${categoryEntity.id})|">Add</button>
     </div>
 
 </div>
 <script th:inline="javascript" type="text/javascript">
-    function makeSubmenu(categoryId) {
+
+    function removeCategory(categoryId){
+        alert("Remove category " + categoryId)
+    }
+
+    function showAddCategoryForm(categoryId){
+        $( "#add_button" ).append( "<form action='/admin/categories'><label for=\"name\">Title:</label><br>\n" +
+            "  <input type=\"text\" name=\"name\"><br>" +
+            "<input type=\"submit\" value=\"Ok\">" +
+            "</form>" );
+
+    }
+
+    function openSubmenu(categoryId) {
         $.get({
             url: /*[[ @{/ajax/getCategory} ]]*/ null,
             dataType: 'json',
@@ -26,7 +41,7 @@
 
             const categoryDiv = document.getElementById(categoryId)
             //remove Submenu for categoryEntity button
-            categoryDiv.firstElementChild.setAttribute("onclick", "removeSubmenu(" + categoryId + ")")
+            categoryDiv.firstElementChild.setAttribute("onclick", "hideSubmenu(" + categoryId + ")")
 
             const subCategoriesDiv = document.createElement("div");
             subCategoriesDiv.setAttribute("id", categoryId + "_sub")
@@ -37,35 +52,40 @@
                 const div = document.createElement("div")
                 const b = document.createElement("button")
                 b.innerHTML = subcategory.name
-                setStyles(categoryDiv, div)
+                setMargin(categoryDiv, div)
                 subCategoriesDiv.appendChild(div)
                 div.setAttribute("id", subcategory.id)
                 div.appendChild(b)
+
+                //remove button
+                const bRemove = document.createElement("button")
+                bRemove.innerText = "Remove"
+                bRemove.setAttribute("onclick", "removeCategory(" + subcategory.id + ")")
+                div.appendChild(bRemove)
 
                 if (subcategory.categories.length <= 0) {
                     //if its end category
                     b.setAttribute("onclick", "location.href='http://localhost:8080/products?id="
                         + subcategory.id + "';")
                 }else {
-                    b.setAttribute("onclick", "makeSubmenu(" + subcategory.id + ")")
-
+                    b.setAttribute("onclick", "openSubmenu(" + subcategory.id + ")")
                 }
             }
         });
     }
 
-    function setStyles(styledElem, elem){
+    function setMargin(styledElem, elem){
         let margin = 1 + parseInt(styledElem.getAttribute("class").charAt(3))
-        elem.setAttribute("class", "ms-" + margin +" w-100")
+        elem.setAttribute("class", "ms-" + margin +" w-100 row-cols-2")
     }
 
-    function removeSubmenu(categoryId) {
+    function hideSubmenu(categoryId) {
         const subcategoriesDiv = document.getElementById(categoryId + '_sub')
         subcategoriesDiv.remove()
         const categoryDiv = document.getElementById(categoryId)
-        categoryDiv.firstElementChild.setAttribute("onclick", "makeSubmenu(" + categoryId + ")")
-
+        categoryDiv.firstElementChild.setAttribute("onclick", "openSubmenu(" + categoryId + ")")
     }
+
 </script>
 </body>
 </html>

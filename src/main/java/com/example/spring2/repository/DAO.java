@@ -11,6 +11,10 @@ public interface DAO {
 
     Category getCategoryById(long id);
 
+    boolean deleteCategory(long id);
+
+    boolean addCategory(String name, long parentCategoryId);
+
     Product getProductById(long id);
 
 }

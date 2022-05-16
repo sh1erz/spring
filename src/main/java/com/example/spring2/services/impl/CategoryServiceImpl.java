@@ -28,4 +28,13 @@ public class CategoryServiceImpl implements CategoryService {
         return dao.getCategoryById(categoryId);
     }
 
+    @Override
+    public boolean deleteCategory(long id) {
+        return dao.deleteCategory(id);
+    }
+
+    @Override
+    public boolean addCategory(String name, long parentCategoryId) {
+        return dao.addCategory(name, parentCategoryId);
+    }
 }
