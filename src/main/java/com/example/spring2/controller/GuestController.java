@@ -34,7 +34,7 @@ public class GuestController {
     public String products(Model model, @RequestParam long id) {
         Category category = categoryService.getCategory(id);
         model.addAttribute("category", category);
-        return "products";
+        return "guest_products";
     }
 
     @GetMapping(value = "/guest/product")

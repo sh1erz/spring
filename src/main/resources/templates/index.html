@@ -8,10 +8,10 @@
 <body style="margin: 0;">
 <header th:replace="fragments/header.html :: header"></header>
 <h2>Categories</h2>
-<div class="row-cols-1">
+<div class="row">
     <button th:each="category : ${root_categories}" th:id="${category.id}"
             th:text="${category.name}" th:onclick="|showSub(${category.id})|"
-            data-toggle="collapse" aria-expanded="false" type="button"  class="btn btn-primary"></button>
+            data-toggle="collapse" aria-expanded="false" type="button" class="btn btn-primary mx-1 align-self-start"></button>
 </div>
 
 <script th:inline="javascript" type="text/javascript">
@@ -26,40 +26,14 @@
             let group = document.createElement("div")
             group.setAttribute("id", "group_" + categoryId)
             rootElem.after(group)
+            setGroupAttrs(group, group.getAttribute("class"))
             for (let i = 0; i < rootCategory.categories.length; i++) {
                 let subCategory = rootCategory.categories[i]
-                initSubCategories(subCategory,group)
+                initSubCategories(subCategory, group)
                 //group.append(subElem)
             }
             rootElem.setAttribute("aria-controls", "group_" + rootCategory.id)
             rootElem.setAttribute("data-target", "#group_" + rootCategory.id)
-            /*const categoryDiv = document.getElementById(categoryId)
-            //remove Submenu for categoryEntity button
-            categoryDiv.firstElementChild.setAttribute("onclick", "removeSubmenu(" + categoryId + ")")
-
-            const subCategoriesDiv = document.createElement("div");
-            subCategoriesDiv.setAttribute("id", categoryId + "_sub")
-            categoryDiv.append(subCategoriesDiv)
-
-            for (let i = 0; i < category.categories.length; i++) {
-                let subcategory = category.categories[i]
-                const div = document.createElement("div")
-                const b = document.createElement("button")
-                b.innerHTML = subcategory.name
-                setStyles(categoryDiv, div)
-                subCategoriesDiv.appendChild(div)
-                div.setAttribute("id", subcategory.id)
-                div.appendChild(b)
-
-                if (subcategory.categories.length <= 0) {
-                    //if its end category
-                    b.setAttribute("onclick", "location.href='http://localhost:8080/products?id="
-                        + subcategory.id + "';")
-                }else {
-                    b.setAttribute("onclick", "makeSubmenu(" + subcategory.id + ")")
-
-                }
-            }*/
         });
     }
 
@@ -81,16 +55,21 @@
 
         let group = document.createElement("div")
         group.setAttribute("id", "group_" + category.id)
-        group.setAttribute("class","collapse")
+        setGroupAttrs(group, group.getAttribute("class"))
+        group.setAttribute("class", "collapse")
         previousGroup.append(group)
         for (let i = 0; i < category.categories.length; i++) {
             let subCategory = category.categories[i]
-            let subElem = initSubCategories(subCategory,group)
+            let subElem = initSubCategories(subCategory, group)
             group.append(subElem)
         }
         categoryElem.setAttribute("aria-controls", "group_" + category.id)
         categoryElem.setAttribute("data-target", "#group_" + category.id)
         return categoryElem
+    }
+
+    function setGroupAttrs(group, style) {
+        group.getAttribute(style + " ml-0.25")
     }
 
     function setCollapsableAttrs(b) {

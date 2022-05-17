@@ -7,7 +7,21 @@
 <body style="margin: 0">
 <header th:replace="fragments/header.html :: header"></header>
 <h1 th:text="${product.name}"></h1>
+<form action="">
+    <input class="productId" type="hidden" th:value="${product.id}">
+    <label>
+        <input id="productName" type="text" placeholder="Enter product name">
+    </label>
+    <button type="submit">Change name</button>
+</form><br>
 <div th:text="|Price: ${product.price}|"></div>
 
+<form>
+    <input class="productId" type="hidden" th:value="${product.id}">
+    <label>
+        <input id="productPrice" type="text" placeholder="Enter product price">
+    </label>
+    <button type="submit">Change name</button>
+</form><br>
 </body>
 </html>
