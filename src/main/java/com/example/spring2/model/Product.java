@@ -1,18 +1,26 @@
 package com.example.spring2.model;
 
 public class Product {
-    private final long id;
+    private long id = -1;
     private String name;
     private int price;
+    private long categoryId;
 
-    public Product(long id, String name, int price) {
+    public Product(){}
+
+    public Product(long id, String name, int price, long categoryId) {
         this.id = id;
         this.name = name;
         this.price = price;
+        this.categoryId = categoryId;
     }
 
     public long getId() {
         return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -29,5 +37,13 @@ public class Product {
 
     public void setPrice(int price) {
         this.price = price;
+    }
+
+    public long getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(long categoryId) {
+        this.categoryId = categoryId;
     }
 }

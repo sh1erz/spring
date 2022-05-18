@@ -1,15 +1,13 @@
 package com.example.spring2.controller;
 
 import com.example.spring2.model.Category;
+import com.example.spring2.model.Product;
 import com.example.spring2.services.api.CategoryService;
 import com.example.spring2.services.api.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -39,6 +37,8 @@ public class AdminController {
         return categoryService.deleteCategory(id);
     }
 
+    //Products
+
     @GetMapping(value = "/admin/products")
     public String products(Model model, @RequestParam long id) {
         Category category = categoryService.getCategory(id);
@@ -52,17 +52,13 @@ public class AdminController {
         return "admin_product";
     }
 
-    @PostMapping(value = "/admin/product/name")
-    public Boolean setProductName(Model model, @RequestParam long id) {
-        return true;
+    @PostMapping(value = "/admin/postProduct")
+    public String setProduct(@ModelAttribute Product product) {
+        if (product != null && productService.postProduct(product)) {
+            return "redirect:/admin/products?id=" + product.getId();
+        } else return "error";
     }
 
-    @GetMapping(value = "/admin/product/price")
-    public Boolean setProductPrice(Model model, @RequestParam long id) {
-        model.addAttribute("product", productService.getProduct(id));
-        return true;
-    }
-
-
+    public static String BASE_URL = "http://localhost:8080/";
 
 }

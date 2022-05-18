@@ -20,7 +20,7 @@ public class GuestController {
 
     @GetMapping(value = { "/", "/index" })
     public String index(Model model){
-        model.addAttribute("root_categories", categoryService.getRootCategories());
+        model.addAttribute("categories", categoryService.getRootCategories());
         return "index";
     }
 

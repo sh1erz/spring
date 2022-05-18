@@ -25,12 +25,12 @@ public class DataProvider implements DAO {
 
     @Override
     public boolean deleteCategory(long id) {
-       return categories.removeIf(ce -> ce.getId() == id);
+        return categories.removeIf(ce -> ce.getId() == id);
     }
 
     @Override
     public boolean addCategory(String name, long parentCategoryId) {
-        CategoryEntity category = new CategoryEntity(++categoryId,name,parentCategoryId);
+        CategoryEntity category = new CategoryEntity(++categoryId, name, parentCategoryId);
         return categories.add(category);
     }
 
@@ -40,9 +40,25 @@ public class DataProvider implements DAO {
                 .map(this::productEntityToDomain).orElse(null);
     }
 
+    @Override
+    public boolean addProduct(Product product) {
+        ProductEntity existingProduct = productEntities.stream().filter(p -> p.getId() == product.getId()).findFirst().orElse(null);
+        if (existingProduct != null) {
+            existingProduct.setName(product.getName());
+            existingProduct.setPrice(product.getPrice());
+            return true;
+        }
+        return productEntities.add(productDomainToEntity(product));
+    }
+
+    @Override
+    public boolean removeProduct(long productId) {
+        return productEntities.removeIf(pe -> pe.getId() == productId);
+    }
+
     private List<Product> getProductsInCategory(CategoryEntity categoryEntity) {
         return productEntities.stream().filter(productEntity -> productEntity.getCategoryId() == categoryEntity.getId())
-                .map(pe -> new Product(pe.getId(), pe.getName(), pe.getPrice())).collect(Collectors.toList());
+                .map(pe -> new Product(pe.getId(), pe.getName(), pe.getPrice(), pe.getCategoryId())).collect(Collectors.toList());
     }
 
     private List<Category> getSubcategories(CategoryEntity categoryEntity) {
@@ -56,7 +72,11 @@ public class DataProvider implements DAO {
     }
 
     private Product productEntityToDomain(ProductEntity pe) {
-        return new Product(pe.getId(), pe.getName(), pe.getPrice());
+        return new Product(pe.getId(), pe.getName(), pe.getPrice(), pe.getCategoryId());
+    }
+
+    private ProductEntity productDomainToEntity(Product p) {
+        return new ProductEntity(++productId, p.getName(), p.getPrice(), p.getCategoryId());
     }
 
     static int productId = 6;

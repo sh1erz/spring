@@ -9,7 +9,7 @@
 <header th:replace="fragments/header.html :: header"></header>
 <h2>Categories</h2>
 <div class="row">
-    <button th:each="category : ${root_categories}" th:id="${category.id}"
+    <button th:each="category : ${categories}" th:id="${category.id}"
             th:text="${category.name}" th:onclick="|showSub(${category.id})|"
             data-toggle="collapse" aria-expanded="false" type="button" class="btn btn-primary mx-1 align-self-start"></button>
 </div>

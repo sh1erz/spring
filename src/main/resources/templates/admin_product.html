@@ -6,22 +6,20 @@
 </head>
 <body style="margin: 0">
 <header th:replace="fragments/header.html :: header"></header>
-<h1 th:text="${product.name}"></h1>
-<form action="">
-    <input class="productId" type="hidden" th:value="${product.id}">
-    <label>
-        <input id="productName" type="text" placeholder="Enter product name">
-    </label>
-    <button type="submit">Change name</button>
-</form><br>
-<div th:text="|Price: ${product.price}|"></div>
 
-<form>
-    <input class="productId" type="hidden" th:value="${product.id}">
+<form th:action="@{/admin/postProduct}" method="post" th:object="${product}">
+    <input type="hidden" th:field="*{id}">
+    <input type="hidden" th:field="*{categoryId}">
+    <p>Title:</p>
     <label>
-        <input id="productPrice" type="text" placeholder="Enter product price">
+        <input id="productName" type="text" th:value="*{name}" th:field="*{name}">
     </label>
-    <button type="submit">Change name</button>
-</form><br>
+    <p>Price:</p>
+    <label>
+        <input id="productPrice" type="text" th:value="*{price}" th:field="*{price}">
+    </label>
+    <button type="submit">Apply changes</button>
+</form>
+<br>
 </body>
 </html>

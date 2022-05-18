@@ -21,12 +21,12 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public boolean setProductPrice(long productId, int price) {
-        return false;
+    public boolean postProduct(Product product) {
+        return dao.addProduct(product);
     }
 
     @Override
-    public Product changeProductName(long productId, String name) {
-        return null;
+    public boolean removeProduct(long productId) {
+        return dao.removeProduct(productId);
     }
 }

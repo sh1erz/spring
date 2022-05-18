@@ -17,4 +17,8 @@ public interface DAO {
 
     Product getProductById(long id);
 
+    boolean addProduct(Product product);
+
+    boolean removeProduct(long productId);
+
 }
