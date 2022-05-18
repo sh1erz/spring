@@ -60,6 +60,13 @@ public class AdminController {
         } else return "error";
     }
 
+    @GetMapping(value = "/admin/deleteProduct")
+    public String deleteProduct(@RequestParam long productId, @RequestParam long categoryId) {
+        if (productService.removeProduct(productId)) {
+            return "redirect:/admin/products?id=" + categoryId;
+        } else return "error";
+    }
+
     public static String BASE_URL = "http://localhost:8080/";
 
 }
