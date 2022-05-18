@@ -11,5 +11,5 @@ public interface CategoryService {
 
     boolean deleteCategory(long id);
 
-    boolean addCategory(String name, long parentCategoryId);
+    boolean addCategory(Category category);
 }

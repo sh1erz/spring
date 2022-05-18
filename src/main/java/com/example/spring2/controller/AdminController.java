@@ -22,14 +22,20 @@ public class AdminController {
 
     @GetMapping(value = {"/admin/categories"})
     public String categories(Model model) {
-        model.addAttribute("root_categories", categoryService.getRootCategories());
+        model.addAttribute("categories", categoryService.getRootCategories());
         return "admin_categories";
     }
 
+    @GetMapping(value = {"/admin/category"})
+    public String category(Model model, @RequestParam long id) {
+        model.addAttribute("category", categoryService.getCategory(id));
+        model.addAttribute("newCategory", new Category());
+        return "admin_category";
+    }
+
     @PostMapping(value = "/admin/categories/create")
-    public Boolean addCategory(@RequestBody String categoryName, Long parentCategoryId) {
-        long parentCategoryId1 = parentCategoryId != null ? parentCategoryId : -1;
-        return categoryService.addCategory(categoryName, parentCategoryId1);
+    public Boolean addCategory(@ModelAttribute Category newCategory) {
+        return categoryService.addCategory(newCategory);
     }
 
     @PostMapping(value = "/admin/categories/remove")

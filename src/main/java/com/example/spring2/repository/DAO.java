@@ -13,7 +13,7 @@ public interface DAO {
 
     boolean deleteCategory(long id);
 
-    boolean addCategory(String name, long parentCategoryId);
+    boolean addCategory(Category category);
 
     Product getProductById(long id);
 

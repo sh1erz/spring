@@ -30,9 +30,13 @@ public class DataProvider implements DAO {
     }
 
     @Override
-    public boolean addCategory(String name, long parentCategoryId) {
-        CategoryEntity category = new CategoryEntity(++categoryId, name, parentCategoryId);
-        return categories.add(category);
+    public boolean addCategory(Category category) {
+        CategoryEntity existingCategory = categories.stream().filter(c -> c.getId() == category.getId()).findFirst().orElse(null);
+        if (existingCategory != null) {
+            existingCategory.setName(category.getName());
+            return true;
+        }
+        return categories.add(categoryDomainToEntity(category));
     }
 
     @Override
@@ -69,7 +73,11 @@ public class DataProvider implements DAO {
     }
 
     private Category categoryEntityToDomain(CategoryEntity ce) {
-        return new Category(ce.getId(), ce.getName(), getSubcategories(ce), getProductsInCategory(ce));
+        return new Category(ce.getId(), ce.getName(), getSubcategories(ce), getProductsInCategory(ce), ce.getCategoryId());
+    }
+
+    private CategoryEntity categoryDomainToEntity(Category c) {
+        return new CategoryEntity(++categoryId, c.getName(), c.getRootId());
     }
 
     private Product productEntityToDomain(ProductEntity pe) {

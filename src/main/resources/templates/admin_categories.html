@@ -1,91 +1,93 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Main</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/css/bootstrap.min.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body style="margin: 0;">
 <header th:replace="fragments/header.html :: header"></header>
 <h2>Categories</h2>
-<div>
-    <div class="ms-0 w-100 row-cols-4" th:each="categoryEntity : ${root_categories}" th:id="${categoryEntity.id}">
-        <button  th:text="${categoryEntity.name}"
-                 th:onclick="|openSubmenu(${categoryEntity.id})|"></button>
-        <button th:onclick="|removeCategory(${categoryEntity.id})|">Remove</button>
-        <button th:onclick="|showAddCategoryForm(${categoryEntity.id})|">Add</button>
-    </div>
-
+<div class="row" th:each="category : ${categories}">
+    <button  th:id="${category.id}"
+            th:text="${category.name}" th:onclick="|showSub(${category.id})|"
+            data-toggle="collapse" aria-expanded="false" type="button"
+            class="btn btn-primary mx-1 align-self-start"></button>
+    <button th:onclick="|window.location='@{/admin/category(id=${category.id})}'|">Edit</button>
 </div>
+
 <script th:inline="javascript" type="text/javascript">
-
-    function removeCategory(categoryId){
-        alert("Remove category " + categoryId)
-    }
-
-    function showAddCategoryForm(categoryId){
-        $( "#add_button" ).append( "<form action='/admin/categories'><label for=\"name\">Title:</label><br>\n" +
-            "  <input type=\"text\" name=\"name\"><br>" +
-            "<input type=\"submit\" value=\"Ok\">" +
-            "</form>" );
-
-    }
-
-    function openSubmenu(categoryId) {
+    function showSub(categoryId) {
         $.get({
             url: /*[[ @{/ajax/getCategory} ]]*/ null,
             dataType: 'json',
             data: {id: categoryId}
-        }).then(function (category) {
-
-            const categoryDiv = document.getElementById(categoryId)
-            //remove Submenu for categoryEntity button
-            categoryDiv.firstElementChild.setAttribute("onclick", "hideSubmenu(" + categoryId + ")")
-
-            const subCategoriesDiv = document.createElement("div");
-            subCategoriesDiv.setAttribute("id", categoryId + "_sub")
-            categoryDiv.append(subCategoriesDiv)
-
-            for (let i = 0; i < category.categories.length; i++) {
-                let subcategory = category.categories[i]
-                const div = document.createElement("div")
-                const b = document.createElement("button")
-                b.innerHTML = subcategory.name
-                setMargin(categoryDiv, div)
-                subCategoriesDiv.appendChild(div)
-                div.setAttribute("id", subcategory.id)
-                div.appendChild(b)
-
-                //remove button
-                const bRemove = document.createElement("button")
-                bRemove.innerText = "Remove"
-                bRemove.setAttribute("onclick", "removeCategory(" + subcategory.id + ")")
-                div.appendChild(bRemove)
-
-                if (subcategory.categories.length <= 0) {
-                    //if its end category
-                    b.setAttribute("onclick", "location.href='http://localhost:8080/guest_products?id="
-                        + subcategory.id + "';")
-                }else {
-                    b.setAttribute("onclick", "openSubmenu(" + subcategory.id + ")")
-                }
+        }).then(function (rootCategory) {
+            let rootElem = document.getElementById(categoryId)
+            rootElem.removeAttribute("onclick")
+            let group = document.createElement("div")
+            group.setAttribute("id", "group_" + categoryId)
+            rootElem.after(group)
+            group.setAttribute("class", "collapse show")
+            setGroupAttrs(group)
+            for (let i = 0; i < rootCategory.categories.length; i++) {
+                let subCategory = rootCategory.categories[i]
+                initSubCategories(subCategory, group)
             }
+            rootElem.setAttribute("aria-controls", "group_" + rootCategory.id)
+            rootElem.setAttribute("data-target", "#group_" + rootCategory.id)
         });
     }
 
-    function setMargin(styledElem, elem){
-        let margin = 1 + parseInt(styledElem.getAttribute("class").charAt(3))
-        elem.setAttribute("class", "ms-" + margin +" w-100 row-cols-2")
+    //return subCategory id
+    function initSubCategories(category, previousGroup) {
+        const categoryElem = document.createElement("button")
+        categoryElem.setAttribute("id", category.id)
+        categoryElem.innerHTML = category.name
+        previousGroup.append(categoryElem)
+        //edit button
+        const bEdit = document.createElement("button")
+        bEdit.innerText = "Edit"
+        bEdit.setAttribute("onclick", "|window.location.href='http://localhost:8080/admin/category?id="
+            + subcategory.id)
+        previousGroup.append(bEdit)
+
+        //if no more subcategories
+        if (category.categories.length <= 0) {
+            categoryElem.setAttribute("class", "btn btn-secondary")
+            categoryElem.setAttribute("onclick", "location.href='http://localhost:8080/products?id="
+                + category.id + "';")
+            return categoryElem
+        }
+        //if there is more
+        setCollapsableAttrs(categoryElem)
+
+        let group = document.createElement("div")
+        group.setAttribute("id", "group_" + category.id)
+        group.setAttribute("class", "collapse")
+        previousGroup.append(group)
+        for (let i = 0; i < category.categories.length; i++) {
+            let subCategory = category.categories[i]
+            let subElem = initSubCategories(subCategory, group)
+            group.append(subElem)
+        }
+        categoryElem.setAttribute("aria-controls", "group_" + category.id)
+        categoryElem.setAttribute("data-target", "#group_" + category.id)
+        return categoryElem
     }
 
-    function hideSubmenu(categoryId) {
-        const subcategoriesDiv = document.getElementById(categoryId + '_sub')
-        subcategoriesDiv.remove()
-        const categoryDiv = document.getElementById(categoryId)
-        categoryDiv.firstElementChild.setAttribute("onclick", "openSubmenu(" + categoryId + ")")
+    function setGroupAttrs(group) {
+        group.setAttribute("class", group.getAttribute("class") + " bg-dark")
     }
 
+    function setCollapsableAttrs(b) {
+        b.setAttribute("class", "btn btn-primary")
+        b.setAttribute("data-toggle", "collapse")
+        b.setAttribute("aria-expanded", "false")
+        b.setAttribute("type", "button")
+    }
 </script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"></script>
 </body>
 </html>
