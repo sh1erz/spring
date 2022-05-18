@@ -6,6 +6,7 @@ import com.example.spring2.repository.entities.CategoryEntity;
 import com.example.spring2.repository.entities.ProductEntity;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -82,20 +83,26 @@ public class DataProvider implements DAO {
     static int productId = 6;
     static int categoryId = 5;
 
-    private final List<ProductEntity> productEntities = Arrays.asList(
-            new ProductEntity(0, "Accessoire 1", 50, 2),
-            new ProductEntity(2, "Accessoire 2", 60, 2),
-            new ProductEntity(3, "Accessoire 3", 70, 2),
-            new ProductEntity(4, "Phone", 500, 3),
-            new ProductEntity(5, "Lighting", 100, 5),
-            new ProductEntity(6, "Lighting2", 110, 5)
-    );
-    private final List<CategoryEntity> categories = Arrays.asList(
-            new CategoryEntity(0, "Electronics"),
-            new CategoryEntity(1, "Smart Home"),
-            new CategoryEntity(2, "Accessories", 0),
-            new CategoryEntity(3, "Cell Phones", 0),
-            new CategoryEntity(4, "Smart Home Lighting", 1),
-            new CategoryEntity(5, "Smart Home Lighting A1", 4)
-    );
+    private final List<ProductEntity> productEntities = new ArrayList<>();
+    private final List<CategoryEntity> categories = new ArrayList<>();
+
+    public DataProvider() {
+        productEntities.addAll(Arrays.asList(
+                new ProductEntity(0, "Accessoire 1", 50, 2),
+                new ProductEntity(2, "Accessoire 2", 60, 2),
+                new ProductEntity(3, "Accessoire 3", 70, 2),
+                new ProductEntity(4, "Phone", 500, 3),
+                new ProductEntity(5, "Lighting", 100, 5),
+                new ProductEntity(6, "Lighting2", 110, 5)
+        ));
+        categories.addAll(Arrays.asList(
+                new CategoryEntity(0, "Electronics"),
+                new CategoryEntity(1, "Smart Home"),
+                new CategoryEntity(2, "Accessories", 0),
+                new CategoryEntity(3, "Cell Phones", 0),
+                new CategoryEntity(4, "Smart Home Lighting", 1),
+                new CategoryEntity(5, "Smart Home Lighting A1", 4)
+        ));
+    }
+
 }

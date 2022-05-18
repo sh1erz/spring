@@ -14,6 +14,23 @@
         <h3 th:text="${product.name}"></h3>
         <h5 th:text="${product.price}"></h5>
     </div>
+    <br>
+    <form th:action="@{/admin/postProduct}" method="post" th:object="${product}">
+        <h3>Add product</h3>
+
+        <input type="hidden" th:value="${category.id}" th:name="categoryId">
+        <p>Title:</p>
+        <label>
+            <input id="productName" type="text" placeholder="Enter product title" th:field="*{name}">
+        </label>
+        <p>Price:</p>
+        <label>
+            <input id="productPrice" type="text" placeholder="Enter product price" th:field="*{price}">
+        </label>
+        <button type="submit">Add</button>
+    </form>
+    <br>
+
 </div>
 </body>
 </html>

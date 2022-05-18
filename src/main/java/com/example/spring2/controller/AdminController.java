@@ -43,6 +43,7 @@ public class AdminController {
     public String products(Model model, @RequestParam long id) {
         Category category = categoryService.getCategory(id);
         model.addAttribute("category", category);
+        model.addAttribute("product", new Product());
         return "admin_products";
     }
 
@@ -53,7 +54,7 @@ public class AdminController {
     }
 
     @PostMapping(value = "/admin/postProduct")
-    public String setProduct(@ModelAttribute Product product) {
+    public String postProduct(@ModelAttribute Product product) {
         if (product != null && productService.postProduct(product)) {
             return "redirect:/admin/products?id=" + product.getCategoryId();
         } else return "error";
