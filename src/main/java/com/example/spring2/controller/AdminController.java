@@ -55,7 +55,7 @@ public class AdminController {
     @PostMapping(value = "/admin/postProduct")
     public String setProduct(@ModelAttribute Product product) {
         if (product != null && productService.postProduct(product)) {
-            return "redirect:/admin/products?id=" + product.getId();
+            return "redirect:/admin/products?id=" + product.getCategoryId();
         } else return "error";
     }
 
