@@ -11,5 +11,5 @@ public interface CategoryService {
 
     boolean deleteCategory(long id);
 
-    boolean addCategory(Category category);
+    boolean postCategory(Category category);
 }

@@ -3,13 +3,18 @@ package com.example.spring2.model;
 import java.util.List;
 
 public class Category {
-    private long id;
+    private long id = -1;
     private String name;
     private List<Category> categories;
     private List<Product> products;
-    private long rootId;
+    private long rootId = -1;
 
     public Category() {
+    }
+
+    public Category(long id, String name) {
+        this.id = id;
+        this.name = name;
     }
 
     public Category(long id, String name, List<Category> categories, List<Product> products, long rootId) {
@@ -22,6 +27,10 @@ public class Category {
 
     public long getId() {
         return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getName() {

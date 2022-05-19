@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${category.id}"></title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/css/bootstrap.min.css">
+</head>
+<body style="margin: 0">
+<header th:replace="fragments/header.html :: header"></header>
+<h1>Category</h1>
+<form method="post" th:action="@{/admin/changeCategory}" th:object="${category}">
+  <input type="hidden" th:field="*{id}" >
+    <p>Name:</p>
+    <label>
+        <input type="text" th:value="*{name}" th:field="*{name}">
+    </label>
+    <input type="submit" class="btn btn-secondary" value="Change"/>
+    <h3>Delete category</h3>
+    <input type="submit" th:formaction="@{/admin/removeCategory}" value="Delete" class="btn btn-danger">
+</form>
+<br>
+<!--
+<form th:action="@{/admin/categories/remove}" method="post" th:object="${category}">
+  <button type="submit" class="btn btn-danger">Delete</button>
+</form>-->
+
+<h3>Create subcatgory</h3>
+<form th:action="@{/admin/categories/create}" method="get">
+    <input type="hidden" th:field="${category.id}">
+    <p>Title:</p>
+    <label>
+        <input id="name" type="text" placeholder="Enter title">
+    </label>
+    <button type="submit" class="btn btn-secondary">Create</button>
+</form>
+<br>
+</body>
+</html>

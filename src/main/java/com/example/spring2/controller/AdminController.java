@@ -7,7 +7,10 @@ import com.example.spring2.services.api.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.Resource;
 
@@ -28,19 +31,31 @@ public class AdminController {
 
     @GetMapping(value = {"/admin/category"})
     public String category(Model model, @RequestParam long id) {
-        model.addAttribute("category", categoryService.getCategory(id));
-        model.addAttribute("newCategory", new Category());
+        Category category = categoryService.getCategory(id);
+        model.addAttribute("category", category);
         return "admin_category";
     }
 
-    @PostMapping(value = "/admin/categories/create")
-    public Boolean addCategory(@ModelAttribute Category newCategory) {
-        return categoryService.addCategory(newCategory);
+    @GetMapping(value = "/admin/categories/create")
+    public String addCategory(@RequestParam String name, @RequestParam long rootId) {
+        Category newCategory = new Category(-1, name, null, null, rootId);
+        if (categoryService.postCategory(newCategory)) {
+            return "redirect:/admin/category?id=" + rootId;
+        } else return "error";
     }
 
-    @PostMapping(value = "/admin/categories/remove")
-    public Boolean removeCategory(@RequestBody long id) {
-        return categoryService.deleteCategory(id);
+    @PostMapping(value = "/admin/changeCategory")
+    public String changeCategory(@ModelAttribute Category category) {
+        if (category != null && categoryService.postCategory(category)) {
+            return "redirect:/admin/category?id=" + category.getId();
+        } else return "error";
+    }
+
+    @PostMapping(value = "/admin/removeCategory")
+    public String removeCategory(@ModelAttribute Category category) {
+        if (categoryService.deleteCategory(category.getId())) {
+            return "redirect:/admin/categories";
+        } else return "error";
     }
 
     //Products
