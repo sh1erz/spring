@@ -12,7 +12,7 @@
     <button th:each="category : ${categories}" th:id="${category.id}"
             th:text="${category.name}" th:onclick="|showSub(${category.id})|"
             data-toggle="collapse" aria-expanded="false" type="button"
-            class="btn btn-primary mx-1 align-self-start"></button>
+            class="btn btn-primary mx-1 w-75"></button>
 </div>
 
 <script th:inline="javascript" type="text/javascript">
@@ -27,7 +27,7 @@
             let group = document.createElement("div")
             group.setAttribute("id", "group_" + categoryId)
             rootElem.after(group)
-            group.setAttribute("class", "collapse show")
+            group.setAttribute("class", "show")
             setGroupAttrs(group)
             for (let i = 0; i < rootCategory.categories.length; i++) {
                 let subCategory = rootCategory.categories[i]
@@ -57,6 +57,7 @@
         let group = document.createElement("div")
         group.setAttribute("id", "group_" + category.id)
         group.setAttribute("class", "collapse")
+        setGroupAttrs(group)
         previousGroup.append(group)
         for (let i = 0; i < category.categories.length; i++) {
             let subCategory = category.categories[i]
@@ -69,7 +70,7 @@
     }
 
     function setGroupAttrs(group) {
-        group.setAttribute("class", group.getAttribute("class") + " bg-dark")
+        group.setAttribute("class", "row ms-1 w-75 " + group.getAttribute("class"))
     }
 
     function setCollapsableAttrs(b) {

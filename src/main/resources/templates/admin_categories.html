@@ -9,14 +9,25 @@
 <header th:replace="fragments/header.html :: header"></header>
 <h2>Categories</h2>
 <div class="row" th:each="category : ${categories}">
-    <button  th:id="${category.id}"
-            th:text="${category.name}" th:onclick="|showSub(${category.id})|"
+    <button
+            th:id="${category.id}" th:text="${category.name}" th:onclick="|showSub(${category.id})|"
             data-toggle="collapse" aria-expanded="false" type="button"
-            class="btn btn-primary mx-1 align-self-start"></button>
-    <button th:onclick="|window.location='@{/admin/category(id=${category.id})}'|">Edit</button>
+            class="btn btn-primary col-7"></button>
+    <button class="btn btn-info col-1" th:onclick="|window.location.href='@{/admin/category(id=${category.id})}'|">
+        Edit
+    </button>
 </div>
 
 <script th:inline="javascript" type="text/javascript">
+    function editBtn(parent, categoryId) {
+        let btn = document.createElement("button")
+        btn.innerHTML = "Edit"
+        btn.setAttribute("class", "btn btn-info col-1")
+        btn.setAttribute("onclick", "location.href='http://localhost:8080/admin/category?id="
+            + categoryId + "';")
+        parent.append(btn)
+    }
+
     function showSub(categoryId) {
         $.get({
             url: /*[[ @{/ajax/getCategory} ]]*/ null,
@@ -27,12 +38,13 @@
             rootElem.removeAttribute("onclick")
             let group = document.createElement("div")
             group.setAttribute("id", "group_" + categoryId)
-            rootElem.after(group)
-            group.setAttribute("class", "collapse show")
+            rootElem.parentNode.append(group)
+            group.setAttribute("class", "show")
             setGroupAttrs(group)
             for (let i = 0; i < rootCategory.categories.length; i++) {
                 let subCategory = rootCategory.categories[i]
                 initSubCategories(subCategory, group)
+                editBtn(group,subCategory.id)
             }
             rootElem.setAttribute("aria-controls", "group_" + rootCategory.id)
             rootElem.setAttribute("data-target", "#group_" + rootCategory.id)
@@ -45,16 +57,10 @@
         categoryElem.setAttribute("id", category.id)
         categoryElem.innerHTML = category.name
         previousGroup.append(categoryElem)
-        //edit button
-        const bEdit = document.createElement("button")
-        bEdit.innerText = "Edit"
-        bEdit.setAttribute("onclick", "|window.location.href='http://localhost:8080/admin/category?id="
-            + subcategory.id)
-        previousGroup.append(bEdit)
-
         //if no more subcategories
         if (category.categories.length <= 0) {
-            categoryElem.setAttribute("class", "btn btn-secondary")
+            categoryElem.setAttribute("type", "button")
+            categoryElem.setAttribute("class", "btn btn-secondary col-7")
             categoryElem.setAttribute("onclick", "location.href='http://localhost:8080/products?id="
                 + category.id + "';")
             return categoryElem
@@ -65,23 +71,26 @@
         let group = document.createElement("div")
         group.setAttribute("id", "group_" + category.id)
         group.setAttribute("class", "collapse")
-        previousGroup.append(group)
+        setGroupAttrs(group)
         for (let i = 0; i < category.categories.length; i++) {
             let subCategory = category.categories[i]
             let subElem = initSubCategories(subCategory, group)
+            //category + edit
             group.append(subElem)
+            editBtn(group,subCategory.id)
         }
+        previousGroup.parentNode.append(group)
         categoryElem.setAttribute("aria-controls", "group_" + category.id)
         categoryElem.setAttribute("data-target", "#group_" + category.id)
         return categoryElem
     }
 
     function setGroupAttrs(group) {
-        group.setAttribute("class", group.getAttribute("class") + " bg-dark")
+        group.setAttribute("class", "row col-8 ms-1 " + group.getAttribute("class"))
     }
 
     function setCollapsableAttrs(b) {
-        b.setAttribute("class", "btn btn-primary")
+        b.setAttribute("class", "btn btn-primary col-7")
         b.setAttribute("data-toggle", "collapse")
         b.setAttribute("aria-expanded", "false")
         b.setAttribute("type", "button")
