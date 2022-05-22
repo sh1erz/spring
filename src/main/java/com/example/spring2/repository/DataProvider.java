@@ -101,8 +101,9 @@ public class DataProvider implements DAO {
                 new ProductEntity(3, "Accessoire 3", 70, 2),
                 new ProductEntity(4, "Phone", 500, 3),
                 new ProductEntity(5, "Lighting", 100, 5),
-                new ProductEntity(6, "Lighting2", 110, 5)
-        ));
+                new ProductEntity(6, "Lighting2", 110, 5),
+                new ProductEntity(7, "Phone 2", 501, 3)
+                ));
         categories.addAll(Arrays.asList(
                 new CategoryEntity(0, "Electronics"),
                 new CategoryEntity(1, "Smart Home"),
