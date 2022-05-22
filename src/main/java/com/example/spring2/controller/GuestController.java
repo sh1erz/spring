@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
 
 @Controller
 public class GuestController {
@@ -19,7 +20,8 @@ public class GuestController {
     private ProductService productService;
 
     @GetMapping(value = { "/", "/index" })
-    public String index(Model model){
+    public String index(HttpSession session,Model model){
+        session.setAttribute(IS_LOGGED, false);
         model.addAttribute("categories", categoryService.getRootCategories());
         return "index";
     }
@@ -43,5 +45,5 @@ public class GuestController {
         return "guest_product";
     }
 
-
+    public static String IS_LOGGED = "isLogged";
 }

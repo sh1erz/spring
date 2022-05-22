@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
+
+import static com.example.spring2.controller.GuestController.IS_LOGGED;
 
 @Controller
 public class AdminController {
@@ -23,7 +26,8 @@ public class AdminController {
     private ProductService productService;
 
     @GetMapping(value = {"/admin/categories"})
-    public String categories(Model model) {
+    public String categories(HttpSession session, Model model) {
+        session.setAttribute(IS_LOGGED, true);
         model.addAttribute("categories", categoryService.getRootCategories());
         return "admin_categories";
     }
@@ -31,7 +35,7 @@ public class AdminController {
     @GetMapping(value = {"/admin/category"})
     public String category(Model model, @RequestParam long id) {
         Category category = categoryService.getCategory(id);
-        if(category == null) return "redirect:/exception?message=" + "Category id was wrong";
+        if (category == null) return "redirect:/exception?message=" + "Category id was wrong";
         model.addAttribute("category", category);
         return "admin_category";
     }
@@ -63,7 +67,7 @@ public class AdminController {
     @GetMapping(value = "/admin/products")
     public String products(Model model, @RequestParam long id) {
         Category category = categoryService.getCategory(id);
-        if(category == null) return "redirect:/exception?message=" + "Category id was wrong";
+        if (category == null) return "redirect:/exception?message=" + "Category id was wrong";
         model.addAttribute("category", category);
         model.addAttribute("product", new Product());
         return "admin_products";

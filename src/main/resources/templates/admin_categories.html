@@ -51,7 +51,6 @@
         });
     }
 
-    //return subCategory id
     function initSubCategories(category, previousGroup) {
         const categoryElem = document.createElement("button")
         categoryElem.setAttribute("id", category.id)
@@ -61,7 +60,7 @@
         if (category.categories.length <= 0) {
             categoryElem.setAttribute("type", "button")
             categoryElem.setAttribute("class", "btn btn-secondary col-7")
-            categoryElem.setAttribute("onclick", "location.href='http://localhost:8080/products?id="
+            categoryElem.setAttribute("onclick", "location.href='http://localhost:8080/admin/products?id="
                 + category.id + "';")
             return categoryElem
         }

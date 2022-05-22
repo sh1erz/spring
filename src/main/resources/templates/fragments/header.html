@@ -1,6 +1,8 @@
 <header th:fragment="header" xmlns:th="http://www.thymeleaf.org">
     <div class="row p-3 justify-content-between bg-secondary">
         <div class="col-4 h2">Header</div>
-        <div class="text-right col-4 h2" onclick="location.href='/admin/categories'" >Sign in</div>
+        <div class="text-right col-4 h2" onclick="location.href='/'" th:if="${session.isLogged}">Sign out</div>
+        <div class="text-right col-4 h2" onclick="location.href='/admin/categories'" th:unless="${session.isLogged}">Sign in</div>
+
     </div>
 </header>
