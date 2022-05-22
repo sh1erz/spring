@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Error</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/css/bootstrap.min.css">
+</head>
+<body>
+<p th:text="|An exception occurred. Server provided following explanation: ${message.message}|"></p>
+<button class="btn-secondary" onclick="location.href='/admin/categories'">Back to home</button>
+</body>
+</html>

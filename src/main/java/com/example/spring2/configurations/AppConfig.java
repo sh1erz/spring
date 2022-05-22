@@ -1,5 +1,6 @@
 package com.example.spring2.configurations;
 
+import com.example.spring2.model.ExceptionMessage;
 import com.example.spring2.services.api.CategoryService;
 import com.example.spring2.services.impl.CategoryServiceImpl;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
@@ -15,4 +16,9 @@ public class AppConfig {
         return new CategoryServiceImpl();
     }
 
+    @Bean
+    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+    ExceptionMessage exceptionMessage() {
+        return new ExceptionMessage();
+    }
 }
