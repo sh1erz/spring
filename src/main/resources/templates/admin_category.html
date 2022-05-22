@@ -19,17 +19,13 @@
     <input type="submit" th:formaction="@{/admin/removeCategory}" value="Delete" class="btn btn-danger">
 </form>
 <br>
-<!--
-<form th:action="@{/admin/categories/remove}" method="post" th:object="${category}">
-  <button type="submit" class="btn btn-danger">Delete</button>
-</form>-->
 
 <h3>Create subcatgory</h3>
 <form th:action="@{/admin/categories/create}" method="get">
-    <input type="hidden" th:field="${category.id}">
+    <input type="hidden" name="rootId" th:value="${category.id}">
     <p>Title:</p>
     <label>
-        <input id="name" type="text" placeholder="Enter title">
+        <input id="name" name="name" type="text" placeholder="Enter title">
     </label>
     <button type="submit" class="btn btn-secondary">Create</button>
 </form>
