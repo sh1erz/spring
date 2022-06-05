@@ -5,14 +5,16 @@ public class Product {
     private String name;
     private int price;
     private long categoryId;
+    private Availability availability;
 
     public Product(){}
 
-    public Product(long id, String name, int price, long categoryId) {
+    public Product(long id, String name, int price, long categoryId, Availability availability) {
         this.id = id;
         this.name = name;
         this.price = price;
         this.categoryId = categoryId;
+        this.availability = availability;
     }
 
     public long getId() {
@@ -45,5 +47,13 @@ public class Product {
 
     public void setCategoryId(long categoryId) {
         this.categoryId = categoryId;
+    }
+
+    public Availability getAvailability() {
+        return availability;
+    }
+
+    public void setAvailability(Availability availability) {
+        this.availability = availability;
     }
 }

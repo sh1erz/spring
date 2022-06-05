@@ -6,7 +6,10 @@ public class ProductEntity {
     private String name;
     private int price;
     private long categoryId;
-
+    /**
+     * Available by default
+     */
+    private String availability = "AVAILABLE";
 
     public ProductEntity(long id, String name, int price, long categoryId) {
         this.id = id;
@@ -15,6 +18,10 @@ public class ProductEntity {
         this.categoryId = categoryId;
     }
 
+    public ProductEntity(long id, String name, int price, long categoryId, String availability) {
+        this(id, name, price, categoryId);
+        this.availability = availability;
+    }
 
     public long getId() {
         return id;
@@ -42,5 +49,13 @@ public class ProductEntity {
 
     public void setCategoryId(long categoryId) {
         this.categoryId = categoryId;
+    }
+
+    public String getAvailability() {
+        return availability;
+    }
+
+    public void setAvailability(String availability) {
+        this.availability = availability;
     }
 }

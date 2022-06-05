@@ -8,7 +8,12 @@
 <body style="margin: 0">
 <header th:replace="fragments/header.html :: header"></header>
 <h1 th:text="${product.name}"></h1>
-<div th:text="|Price: ${product.price}|"></div>
-
+<h3 th:text="|Price: ${product.price}|"></h3>
+<h3>Availability</h3>
+<div th:switch="${product.availability.name()}">
+    <div th:case="'AVAILABLE'" class="h5">Available</div>
+    <div th:case="'LIMITED'" class="text-info h5">Limited</div>
+    <div th:case="'ABSENT'" class="text-danger h5">Absent</div>
+</div>
 </body>
 </html>
