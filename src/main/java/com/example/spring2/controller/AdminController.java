@@ -8,10 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
@@ -57,7 +54,7 @@ public class AdminController {
         } else return "redirect:/exception?message=" + "Category could not be changed";
     }
 
-    @PostMapping(value = "/admin/removeCategory")
+    @DeleteMapping(value = "/admin/removeCategory")
     public String removeCategory(@ModelAttribute Category category) {
         if (categoryService.deleteCategory(category.getId())) {
             return "redirect:/admin/categories";
@@ -91,7 +88,7 @@ public class AdminController {
         } else return "redirect:/exception?message=" + "Product could not be posted";
     }
 
-    @GetMapping(value = "/admin/deleteProduct")
+    @DeleteMapping(value = "/admin/deleteProduct")
     public String deleteProduct(@RequestParam long productId, @RequestParam long categoryId) {
         if (productService.removeProduct(productId)) {
             return "redirect:/admin/products?id=" + categoryId;

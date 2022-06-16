@@ -13,10 +13,10 @@
         <h3 th:text="${product.name}"></h3>
         <h5 th:text="${product.price}"></h5>
     </div>
-    <button class="col-4 bg-danger"
-            th:onclick="|window.location.href='@{/admin/deleteProduct(productId=${product.id},categoryId=${category.id})}'|">
-        Remove
-    </button>
+    <form class="col-4" th:action="@{/admin/deleteProduct(productId=${product.id},categoryId=${category.id})}"
+          th:method="delete">
+        <input type="submit" class="btn-danger" value="Remove"/>
+    </form>
 </div>
 <br>
 <form th:action="@{/admin/postProduct}" method="post" th:object="${product}">

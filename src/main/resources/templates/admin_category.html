@@ -9,21 +9,23 @@
 <header th:replace="fragments/header.html :: header"></header>
 <h1>Category</h1>
 <form method="post" th:action="@{/admin/changeCategory}" th:object="${category}">
-  <input type="hidden" th:field="*{id}" >
+    <input type="hidden" th:field="*{id}">
     <p>Name:</p>
     <label>
         <input type="text" th:value="*{name}" th:field="*{name}">
     </label>
     <p class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
     <input type="submit" class="btn btn-secondary" value="Change"/>
-    <h3>Delete category</h3>
-    <input type="submit" th:formaction="@{/admin/removeCategory}" value="Delete" class="btn btn-danger">
 </form>
 <br>
-
+<h3>Delete category</h3>
+<form th:action="@{/admin/removeCategory}" th:method="delete" th:object="${category}">
+    <input type="hidden" th:field="*{id}">
+    <input type="submit" class="btn btn-danger" value="Delete"/>
+</form>
 <h3>Create subcatgory</h3>
 <form th:action="@{/admin/categories/create}" method="post" th:object="${category}">
-    <input type="hidden" th:field="*{id}" >
+    <input type="hidden" th:field="*{id}">
     <p>Title:</p>
     <label>
         <input id="name" name="name" type="text" placeholder="Enter title">
