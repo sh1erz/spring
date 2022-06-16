@@ -14,6 +14,7 @@
     <label>
         <input type="text" th:value="*{name}" th:field="*{name}">
     </label>
+    <p class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
     <input type="submit" class="btn btn-secondary" value="Change"/>
     <h3>Delete category</h3>
     <input type="submit" th:formaction="@{/admin/removeCategory}" value="Delete" class="btn btn-danger">
@@ -21,12 +22,13 @@
 <br>
 
 <h3>Create subcatgory</h3>
-<form th:action="@{/admin/categories/create}" method="get">
-    <input type="hidden" name="rootId" th:value="${category.id}">
+<form th:action="@{/admin/categories/create}" method="post" th:object="${category}">
+    <input type="hidden" th:field="*{id}" >
     <p>Title:</p>
     <label>
         <input id="name" name="name" type="text" placeholder="Enter title">
     </label>
+    <p class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
     <button type="submit" class="btn btn-secondary">Create</button>
 </form>
 <br>

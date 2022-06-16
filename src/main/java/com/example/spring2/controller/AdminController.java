@@ -7,6 +7,7 @@ import com.example.spring2.services.api.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 import static com.example.spring2.controller.GuestController.IS_LOGGED;
 
@@ -40,11 +42,11 @@ public class AdminController {
         return "admin_category";
     }
 
-    @GetMapping(value = "/admin/categories/create")
-    public String addCategory(@RequestParam String name, @RequestParam long rootId) {
-        Category newCategory = new Category(-1, name, null, null, rootId);
+    @PostMapping(value = "/admin/categories/create")
+    public String addCategory(@ModelAttribute Category category/*@RequestParam String name, @RequestParam long rootId*/) {
+        Category newCategory = new Category(-1, category.getName(), null, null, category.getId());
         if (categoryService.postCategory(newCategory)) {
-            return "redirect:/admin/category?id=" + rootId;
+            return "redirect:/admin/category?id=" + category.getId();
         } else return "redirect:/exception?message=" + "Category could not be created";
     }
 
@@ -80,7 +82,10 @@ public class AdminController {
     }
 
     @PostMapping(value = "/admin/postProduct")
-    public String postProduct(@ModelAttribute Product product) {
+    public String postProduct(@Valid Product product, BindingResult result) {
+        if (result.hasErrors()) {
+            return "admin_product";
+        }
         if (product != null && productService.postProduct(product)) {
             return "redirect:/admin/products?id=" + product.getCategoryId();
         } else return "redirect:/exception?message=" + "Product could not be posted";

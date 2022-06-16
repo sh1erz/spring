@@ -1,9 +1,17 @@
 package com.example.spring2.model;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 public class Category {
     private long id = -1;
+    @NotBlank(message = "Category title can't be blank")
+    @NotNull(message = "Category title can't be empty")
+    @Size(min = 2, message = "Category title size must be at least 2")
+    @Pattern(regexp = "[^<>]*", message = "Category title should not contain '<' or '>'")
     private String name;
     private List<Category> categories;
     private List<Product> products;

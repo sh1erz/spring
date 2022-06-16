@@ -15,10 +15,12 @@
     <label>
         <input id="productName" type="text" th:value="*{name}" th:field="*{name}">
     </label>
+    <p class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
     <p>Price:</p>
     <label>
         <input id="productPrice" type="text" th:value="*{price}" th:field="*{price}">
     </label>
+    <p class="text-danger" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></p>
     <button type="submit" class="btn-info">Apply changes</button>
 </form>
 <br>
