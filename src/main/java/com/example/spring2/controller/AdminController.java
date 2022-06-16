@@ -47,7 +47,7 @@ public class AdminController {
         } else return "redirect:/exception?message=" + "Category could not be created";
     }
 
-    @PostMapping(value = "/admin/changeCategory")
+    @PutMapping(value = "/admin/changeCategory")
     public String changeCategory(@ModelAttribute Category category) {
         if (category != null && categoryService.postCategory(category)) {
             return "redirect:/admin/category?id=" + category.getId();

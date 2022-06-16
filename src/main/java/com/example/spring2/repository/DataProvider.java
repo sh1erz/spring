@@ -103,7 +103,25 @@ public class DataProvider implements DAO {
                 new ProductEntity(4, "Phone", 500, 3),
                 new ProductEntity(5, "Lighting", 100, 5),
                 new ProductEntity(6, "Lighting2", 110, 5),
-                new ProductEntity(7, "Phone 2", 501, 3)
+                new ProductEntity(7, "Phone 2", 501, 3),
+                new ProductEntity(8, "Accessoire 4", 50, 2),
+                new ProductEntity(9, "Accessoire 5", 60, 2, "LIMITED"),
+                new ProductEntity(10, "Accessoire 6", 70, 2, "ABSENT"),
+                new ProductEntity(11, "Accessoire 7", 50, 2),
+                new ProductEntity(12, "Accessoire 8", 60, 2, "LIMITED"),
+                new ProductEntity(13, "Accessoire 9", 70, 2, "ABSENT"),
+                new ProductEntity(14, "Accessoire 10", 50, 2),
+                new ProductEntity(15, "Accessoire 11", 60, 2, "LIMITED"),
+                new ProductEntity(16, "Accessoire 12", 70, 2, "ABSENT"),
+                new ProductEntity(17, "Accessoire 13", 50, 2),
+                new ProductEntity(18, "Accessoire 14", 60, 2, "LIMITED"),
+                new ProductEntity(19, "Accessoire 15", 70, 2, "ABSENT"),
+                new ProductEntity(20, "Accessoire 16", 50, 2),
+                new ProductEntity(21, "Accessoire 17", 60, 2, "LIMITED"),
+                new ProductEntity(22, "Accessoire 18", 70, 2, "ABSENT"),
+                new ProductEntity(23, "Accessoire 19", 50, 2),
+                new ProductEntity(24, "Accessoire 20", 60, 2, "LIMITED"),
+                new ProductEntity(25, "Accessoire 21", 70, 2, "ABSENT")
         ));
         categories.addAll(Arrays.asList(
                 new CategoryEntity(0, "Electronics"),
