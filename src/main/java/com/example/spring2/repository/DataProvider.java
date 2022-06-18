@@ -62,6 +62,11 @@ public class DataProvider implements DAO {
         return productEntities.removeIf(pe -> pe.getId() == productId);
     }
 
+    @Override
+    public List<Product> getProducts() {
+        return productEntities.stream().map(this::productEntityToDomain).collect(Collectors.toList());
+    }
+
     private List<Product> getProductsInCategory(CategoryEntity categoryEntity) {
         return productEntities.stream().filter(productEntity -> productEntity.getCategoryId() == categoryEntity.getId())
                 .map(pe -> new Product(pe.getId(), pe.getName(), pe.getPrice(), pe.getCategoryId(), Availability.valueOf(pe.getAvailability()))).collect(Collectors.toList());

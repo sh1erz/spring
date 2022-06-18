@@ -21,4 +21,5 @@ public interface DAO {
 
     boolean removeProduct(long productId);
 
+    List<Product> getProducts();
 }
