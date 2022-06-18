@@ -49,11 +49,24 @@
     </thead>
     <tbody>
     <tr th:each="product : ${productPage.products}"
-        th:onclick="|window.location.href='@{/guest/product(id=${product.id})}'|">
+        th:onclick="@{/guest/product(id=${product.id})}|">
         <td th:text="${product.name}"></td>
         <td th:text="${product.price}"></td>
     </tr>
     </tbody>
 </table>
+<div class="row-cols-auto">
+    <button class="btn-primary"
+            th:onclick="|window.location.href='@{/allProducts(pageNo=${productPage.pageNo} - 1,sortBy=${productFilterForm.sortBy}, sortDir=${productFilterForm.direction})}'|"
+            th:unless="${productPage.pageNo==1}">
+        Prev
+    </button>
+    <button class="btn-primary" th:text="|page ${productPage.pageNo}|"></button>
+    <a class="btn-primary"
+       th:onclick="|window.location.href='@{/allProducts(pageNo=${productPage.pageNo} + 1,sortBy=${productFilterForm.sortBy}, sortDir=${productFilterForm.direction})}'|"
+       th:unless="${productPage.last}">
+        Next
+    </a>
+</div>
 </body>
 </html>
